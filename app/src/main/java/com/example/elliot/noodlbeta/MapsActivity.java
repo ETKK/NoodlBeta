@@ -81,7 +81,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
             mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
         }
     }
-
+    //Changes
     @Override
     public void onConnectionSuspended(int i) {
         //Some changes
