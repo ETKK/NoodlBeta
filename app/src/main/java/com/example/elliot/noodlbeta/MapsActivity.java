@@ -30,11 +30,12 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     GoogleApiClient user;
+    Double userLat, userLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //buildGoogleApiClient();
+        buildGoogleApiClient();
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -66,20 +67,29 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
         mMap = googleMap;
 
+        Location LastLocation = LocationServices.FusedLocationApi.getLastLocation(user);
+        if (LastLocation != null) {
+            userLat = (LastLocation.getLatitude());
+            userLong = (LastLocation.getLongitude());
+        }
         // Add a marker to your current location
-        LatLng current = new LatLng(Location.getLastLocation(user).getLatitude(), getLastLocation(user).getLongitude());
-        mMap.addMarker(new MarkerOptions().position(current).title("Current Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+        if (userLat != null && userLong != null) {
+            LatLng current = new LatLng(userLat, userLong);
+            mMap.addMarker(new MarkerOptions().position(current).title("Current Location"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+        }
+        else {
+            userLat = 35.3025823;
+            userLong = -120.6641805;
+            LatLng alt = new LatLng(userLat, userLong);
+            mMap.addMarker(new MarkerOptions().position(alt).title("Alternate Location"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(alt));
+        }
     }
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (mLastLocation != null) {
-            mLatitudeText.setText(String.valueOf(mLastLocation.getLatitude()));
-            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
-        }
+
     }
     //Changes
     @Override
@@ -91,6 +101,4 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
-
-    LocationServices.FusedLocationApi.getLastLocation(user);
 }
