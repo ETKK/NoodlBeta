@@ -84,7 +84,7 @@ public class MapsActivity extends ActionBarActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        //Some changes
     }
 
     @Override
