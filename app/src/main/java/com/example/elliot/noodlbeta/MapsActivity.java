@@ -3,6 +3,7 @@ package com.example.elliot.noodlbeta;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -53,7 +54,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         buildGoogleApiClient();
 
         mMap = googleMap;
+        mapInit();
+    }
 
+    public void quickPin(View view){
+        Location LastLocation = LocationServices.FusedLocationApi.getLastLocation(user);
+        if (LastLocation != null) {
+            LatLng current = new LatLng(userLat, userLong);
+            mMap.addMarker(new MarkerOptions().position(current).title("Elliot's Quick Pin"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+        }
+        else{
+            LatLng alt = new LatLng(0, 0);
+            mMap.addMarker(new MarkerOptions().position(alt).title("Alternate Quickpin Location"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(alt));
+
+        }
+    }
+
+    public void mapInit(){
         Location LastLocation = LocationServices.FusedLocationApi.getLastLocation(user);
         if (LastLocation != null) {
             userLat = (LastLocation.getLatitude());
@@ -88,4 +107,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
+
 }
