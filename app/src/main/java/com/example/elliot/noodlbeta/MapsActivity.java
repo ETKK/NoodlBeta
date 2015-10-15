@@ -59,15 +59,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void quickPin(View view){
         Location LastLocation = LocationServices.FusedLocationApi.getLastLocation(user);
+        //Doesn't work with the current emulator
         if (LastLocation != null) {
             LatLng current = new LatLng(userLat, userLong);
             mMap.addMarker(new MarkerOptions().position(current).title("Elliot's Quick Pin"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
         }
+        //Should only execute when GPS isn't working
         else{
-            LatLng alt = new LatLng(0, 0);
+            LatLng alt = new LatLng(37.951306, -122.527702);
             mMap.addMarker(new MarkerOptions().position(alt).title("Alternate Quickpin Location"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(alt));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(alt, 16));
 
         }
     }
@@ -82,7 +84,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (userLat != null && userLong != null) {
             LatLng current = new LatLng(userLat, userLong);
             mMap.addMarker(new MarkerOptions().position(current).title("Current Location"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 16));
         }
         else {
             userLat = 35.3025823;
@@ -90,6 +92,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             LatLng alt = new LatLng(userLat, userLong);
             mMap.addMarker(new MarkerOptions().position(alt).title("Alternate Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(alt));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(alt, 16));
         }
     }
 
